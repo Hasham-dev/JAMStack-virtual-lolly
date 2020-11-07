@@ -1,39 +1,52 @@
 const { ApolloServer, gql } = require('apollo-server-lambda')
 
+const faunadb = require("faunadb");
+const q = faunadb.query;
+const shortId = require("shortid");
+
 const typeDefs = gql`
   type Query {
     hello: String
-    allAuthors: [Author!]
-    author(id: Int!): Author
-    authorByName(name: String!): Author
+
   }
-  type Author {
-    id: ID!
-    name: String!
-    married: Boolean!
+  type Lolly {
+
+    recipientName: String!
+    message: String!
+    senderName: String!
+    flavourTop: String!
+    flavourMiddle: String!
+    flavourBottom: String!
+    lollyPath: String!
+  }
+  type Mutation  {
+    createLolly(recipientName: String!, message: String!, senderName: String!, flavourTop: String!, flavourMiddle: String!, flavourBottom: String!) : Lolly
   }
 `
 
-const authors = [
-  { id: 1, name: 'Terry Pratchett', married: false },
-  { id: 2, name: 'Stephen King', married: true },
-  { id: 3, name: 'JK Rowling', married: false },
-]
 
 const resolvers = {
   Query: {
     hello: () => {
       return 'Hello, world!'
     },
-    allAuthors: () => {
-      return authors
-    },
-    author: () => {},
-    authorByName: (root, args) => {
-      console.log('hihhihi', args.name)
-      return authors.find((x) => x.name === args.name) || 'NOTFOUND'
-    },
   },
+  Mutation: {
+    createLolly: (_,args)=>{
+      const client = new faunadb.client({secret: "fnAD6ENdQ8ACAVBEFQBBaVj1bmi3BTQ_iEyRkv0s"});
+      const id = shortId.generate();
+      args.lollyPath = id
+
+      const result = await client.query(
+
+      );
+      
+      console.log('hihihi', args.name);
+      return {
+        message: "Hello"
+      }
+    }
+  }
 }
 
 const server = new ApolloServer({
