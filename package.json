@@ -17,6 +17,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "gatsby": "^2.25.3",
+    "gatsby-query-params": "^1.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

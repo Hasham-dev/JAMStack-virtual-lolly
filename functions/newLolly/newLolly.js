@@ -7,6 +7,7 @@ const shortId = require("shortid");
 const typeDefs = gql`
   type Query {
     hello: String
+    getLolly(lollyPath: String!): Lolly
 
   }
   type Lolly {
@@ -30,6 +31,15 @@ const resolvers = {
     hello: () => {
       return 'Hello, Lolly!'
     },
+    getLolly: async (_,{lollyPath})=> {
+      console.log("Helo world = ", lollyPath);
+      var result = await client.query(
+        q.Get(q.Match(q.Index("lolly_by_path"),lollyPath))
+        
+      )
+      console.log("Lolly result get = ",result.data);
+      return result.data;
+      }
   },
   Mutation: {
     createLolly: async (_,args)=>{

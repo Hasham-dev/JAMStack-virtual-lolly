@@ -2,17 +2,26 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import React, { useRef, useState } from "react"
 import Header from "../components/Header"
 import Lolly from "../components/Lolly"
+import { navigate } from "gatsby";
 
 
-const GETDATA = gql`
-    {
-        hello
-    }
-`
+// const GETDATA = gql`
+//     {
+//         getLolly {
+//             message,
+//             senderName
+//         }
+//     }
+// `
 const createLollyMutation = gql`
     mutation createLolly($recipientName: String!, $message: String!, $senderName: String!, $flavourTop: String!, $flavourMiddle: String!, $flavourBottom: String!){
         createLolly(recipientName: $recipientName,message: $message,senderName: $senderName,flavourTop: $flavourTop,flavourMiddle: $flavourMiddle,flavourBottom: $flavourBottom){
+            recipientName
             message
+            senderName
+            flavourTop
+            flavourMiddle
+            flavourBottom
             lollyPath
         }
     }
@@ -42,7 +51,9 @@ export default function CreateNew() {
                 flavourBottom: color3
             }
         });
-        console.log("result from server", result);
+        console.log("result = ",result.data.createLolly);
+        navigate(`/showLolly?id=${result.data.createLolly.lollyPath}`);
+
     }
 
     return (
