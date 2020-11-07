@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import React, { useRef, useState } from "react"
 import Header from "../components/Header"
 import Lolly from "../components/Lolly"
@@ -9,7 +9,14 @@ const GETDATA = gql`
         hello
     }
 `
-
+const createLollyMutation = gql`
+    mutation createLolly($recipientName: String!, $message: String!, $senderName: String!, $flavourTop: String!, $flavourMiddle: String!, $flavourBottom: String!){
+        createLolly(recipientName: $recipientName,message: $message,senderName: $senderName,flavourTop: $flavourTop,flavourMiddle: $flavourMiddle,flavourBottom: $flavourBottom){
+            message
+            lollyPath
+        }
+    }
+`
 export default function CreateNew() {
     const [color1, setColor1] = useState("#deaa43");
     const [color2, setColor2] = useState("#d52358");
@@ -18,18 +25,30 @@ export default function CreateNew() {
     const messageRef = useRef();
     const senderRef = useRef();
 
-    const {loading, error, data } = useQuery(GETDATA);
+    // const {loading, error, data } = useQuery(GETDATA);
+    const [createLolly] = useMutation(createLollyMutation);
 
-    const submitLollyForm = () => {
+    const submitLollyForm = async() => {
         console.log("clicked");
         console.log('color 1', color1);
         console.log('Sender Name', senderRef.current.value);
+        const result = await createLolly({
+            variables:{
+                recipientName: recipientNameRef.current.value,
+                message: messageRef.current.value,
+                senderName: senderRef.current.value,
+                flavourTop: color1,
+                flavourMiddle: color2,
+                flavourBottom: color3
+            }
+        });
+        console.log("result from server", result);
     }
 
     return (
         <div>
             <div className="container">
-                {data && data.hello && <div>{data.hello}</div>}
+                {/* {data && data.hello && <div>{data.hello}</div>} */}
                 <Header />
                 
                 <div className="lollyFromDiv">

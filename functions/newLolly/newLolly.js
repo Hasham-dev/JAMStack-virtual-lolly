@@ -33,7 +33,7 @@ const resolvers = {
   },
   Mutation: {
     createLolly: async (_,args)=>{
-      const client = new faunadb.client({secret: "fnAD6ENdQ8ACAVBEFQBBaVj1bmi3BTQ_iEyRkv0s"});
+      const client = new faunadb.Client({secret: "fnAD6ENdQ8ACAVBEFQBBaVj1bmi3BTQ_iEyRkv0s"});
       const id = shortId.generate();
       args.lollyPath = id
 
