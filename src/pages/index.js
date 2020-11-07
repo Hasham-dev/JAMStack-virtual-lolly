@@ -7,10 +7,16 @@ import Lolly from "../components/Lolly"
 export default function Home() {
 
 
-  return (<div>
-    Hello World
-<div>
-  <Lolly />
-</div>
-  </div>)
-}
+  return (
+  <div>
+
+  <div>
+      <Lolly fillLollyTop="#deaa43" fillLollyMiddle="#d52358" fillLollyBottom="#e95946" />
+  </div>
+  <div>
+      <Lolly fillLollyTop="green" fillLollyMiddle="lightBlue" fillLollyBottom="yellow" />
+  </div>
+
+  </div>
+  
+)}
