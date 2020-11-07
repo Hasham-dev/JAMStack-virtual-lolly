@@ -28,23 +28,24 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     hello: () => {
-      return 'Hello, world!'
+      return 'Hello, Lolly!'
     },
   },
   Mutation: {
-    createLolly: (_,args)=>{
+    createLolly: async (_,args)=>{
       const client = new faunadb.client({secret: "fnAD6ENdQ8ACAVBEFQBBaVj1bmi3BTQ_iEyRkv0s"});
       const id = shortId.generate();
       args.lollyPath = id
 
       const result = await client.query(
-
+        q.Create(q.Collection("lollies"),{
+          data: args
+        })
       );
-      
-      console.log('hihihi', args.name);
-      return {
-        message: "Hello"
-      }
+
+      console.log('result', result);
+      console.log('result', result.data);
+      return result.data;
     }
   }
 }
